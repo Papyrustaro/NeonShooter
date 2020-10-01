@@ -59,7 +59,7 @@ public class TitleManager : MonoBehaviour
         }
 
         //ログインしている　かつ　Enterが押されたときにSantaroMainに遷移
-        if(this.createdAccount && Input.GetKeyDown(KeyCode.Return))
+        if(!this.inputPlayerName && Input.GetKeyDown(KeyCode.Return))
         {
             SceneManager.LoadScene("SantaroMain");
         }
@@ -76,23 +76,42 @@ public class TitleManager : MonoBehaviour
     /// </summary>
     public void InputPlayerName()
     {
-        //一応tokenが無いか再確認。
+        if (this.inputPlayerName) return;
+        this.inputPlayerName = true;
+        Debug.Log("入力した名前: " + this.playerNameInputField.text);
+
+        //tokenがある場合、名前だけ変える
         if (this.createdAccount || PlayerPrefs.HasKey("AccountToken"))
         {
-            Debug.Log("すでにアカウントを持っています");
-            return;
+            StartCoroutine(this.networkManager.UpdatePlayerName(this.playerNameInputField.text, PlayerPrefs.GetString("AccountToken"), () =>
+            {
+                PlayerPrefs.SetString("PlayerName", this.playerNameInputField.text);
+                StartCoroutine(SantaroCoroutineManager.DelayMethod(1, () => this.OnLogin()));
+            }));
         }
+        else
+        {
+            //サーバーにアカウントを作成。名前をthis.playerNameInputField.textに
+            StartCoroutine(this.networkManager.RegistAccountFirst(this.playerNameInputField.text, (s) =>
+            {
+                PlayerPrefs.SetString("PlayerName", this.playerNameInputField.text);
+                PlayerPrefs.SetString("AccountToken", s);
+                StartCoroutine(SantaroCoroutineManager.DelayMethod(1, () => this.OnLogin()));
+            }));
+        }        
+    }
+
+    public void UpdatePlayerName()
+    {
         if (this.inputPlayerName) return;
         this.inputPlayerName = true;
         Debug.Log("入力した名前: " + this.playerNameInputField.text);
         //サーバーにアカウントを作成。名前をthis.playerNameInputField.textに
-        StartCoroutine(this.networkManager.RegistAccountFirst(this.playerNameInputField.text, (s) =>
+        StartCoroutine(this.networkManager.UpdatePlayerName(this.playerNameInputField.text, PlayerPrefs.GetString("AccountToken"), () =>
         {
             PlayerPrefs.SetString("PlayerName", this.playerNameInputField.text);
-            PlayerPrefs.SetString("AccountToken", s);
             StartCoroutine(SantaroCoroutineManager.DelayMethod(1, () => this.OnLogin()));
         }));
-        
     }
 
     /// <summary>
@@ -113,6 +132,17 @@ public class TitleManager : MonoBehaviour
         this.announceText.text = "Input YourName...";
         this.showPlayerAchievementButton.gameObject.SetActive(false);
         this.inputPlayerName = false;
+    }
+
+    /// <summary>
+    /// 名前変更button押されたときの処理
+    /// </summary>
+    public void PressedUpdatePlayerName()
+    {
+        this.inputPlayerName = false;
+        this.playerNameInputField.gameObject.SetActive(true);
+        this.announceText.text = "Input YourName...";
+        this.showPlayerAchievementButton.gameObject.SetActive(false);
     }
 
     public void PressedShowPlayerAchievement()
