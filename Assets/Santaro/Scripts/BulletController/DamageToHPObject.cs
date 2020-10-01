@@ -8,6 +8,7 @@ public class DamageToHPObject : MonoBehaviour
     /// 与えるダメージ量
     /// </summary>
     [SerializeField] private int damageValue = 1;
+    [SerializeField] private bool destroyOnAttack = true;
 
     public int DamageValue => this.damageValue;
 
@@ -16,6 +17,6 @@ public class DamageToHPObject : MonoBehaviour
     /// </summary>
     public void OnAttack()
     {
-        Destroy(this.transform.root.gameObject);
+        if(destroyOnAttack) Destroy(this.transform.root.gameObject);
     }
 }
