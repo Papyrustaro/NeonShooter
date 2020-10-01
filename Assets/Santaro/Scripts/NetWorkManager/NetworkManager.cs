@@ -134,12 +134,26 @@ public class NetworkManager : MonoBehaviour
         //後続処理
         if (error == null)
         {
-            result["TotalScore"] = scoreThisTime + (int)result["TotalScore"];
-            result["TotalPlayCount"] = (int)result["TotalPlayCount"] + 1;
-            result["TotalGoalToEnemyCount"] = goalCountToEnemyThisTime + (int)result["TotalGoalToEnemyCount"];
-            if ((int)result["HighScore"] < scoreThisTime) result["HighScore"] = scoreThisTime;
+            result["TotalScore"] = scoreThisTime + int.Parse(result["TotalScore"].ToString());
+            result["TotalPlayCount"] = int.Parse(result["TotalPlayCount"].ToString()) + 1;
+            result["TotalGoalToEnemyCount"] = goalCountToEnemyThisTime + int.Parse(result["TotalGoalToEnemyCount"].ToString());
+            if (int.Parse(result["HighScore"].ToString()) < scoreThisTime) result["HighScore"] = scoreThisTime;
 
-            result.Save();
+            bool isComplete = false;
+            result.SaveAsync(e =>
+            {
+                if(e != null)
+                {
+                    Debug.Log(e);
+                    return;
+                }
+                else
+                {
+                    isComplete = true;
+                }
+            });
+
+            yield return new WaitUntil(() => isComplete);
             onUpdate();
         }
         else
@@ -147,6 +161,7 @@ public class NetworkManager : MonoBehaviour
             Debug.Log(error);
         }
     }
+    
     
     /// <summary>
     /// 特定のデータに着目したランキング上位10名のデータを取得

@@ -59,7 +59,7 @@ public class TitleManager : MonoBehaviour
         }
 
         //ログインしている　かつ　Enterが押されたときにSantaroMainに遷移
-        if(!this.inputPlayerName && Input.GetKeyDown(KeyCode.Return))
+        if(this.inputPlayerName && this.createdAccount && Input.GetKeyDown(KeyCode.Return))
         {
             SceneManager.LoadScene("SantaroMain");
         }
@@ -76,7 +76,7 @@ public class TitleManager : MonoBehaviour
     /// </summary>
     public void InputPlayerName()
     {
-        if (this.inputPlayerName) return;
+        if (this.inputPlayerName || this.playerNameInputField.text.Replace(" ", "").Replace("　", "") == "") return;
         this.inputPlayerName = true;
         Debug.Log("入力した名前: " + this.playerNameInputField.text);
 
@@ -123,6 +123,7 @@ public class TitleManager : MonoBehaviour
         this.createdAccount = true;
         this.announceText.text = "Play Enter...";
         this.showPlayerAchievementButton.gameObject.SetActive(true);
+        this.inputPlayerName = true;
     }
 
     public void OnLogout()

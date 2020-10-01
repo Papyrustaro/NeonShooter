@@ -5,6 +5,7 @@ using System;
 using KanKikuchi.AudioManager;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Santaro.Networking;
 
 /// <summary>
 /// mainのゲームにひとつだけ置く。scoreなど全体の管理。
@@ -13,7 +14,7 @@ public class StageManager : MonoBehaviour
 {
     [SerializeField] private Text currentScoreText;
     [SerializeField] private Text currentPlayerHPText;
-    [SerializeField] private NetworkSample networkSample;
+    [SerializeField] private NetworkManager networkManager;
     public static StageManager Instance { get; private set; }
 
     /// <summary>
@@ -90,13 +91,13 @@ public class StageManager : MonoBehaviour
         StageStaticData.countGoalHockeyToEnemyThisTime = StageManager.Instance.CurrentCountGoalHockeyToEnemy;
 
         Debug.Log("playerが破壊された");
-        if (SceneManager.GetActiveScene().name == "SantaroMain")
+        /*if (SceneManager.GetActiveScene().name == "SantaroMain")
         {
             SceneManager.LoadScene("SantaroGameOver");
-        }
+        }*/
 
-
-        StartCoroutine(this.networkSample.UpdateAchievement(PlayerPrefs.GetString("AccountToken"), this.CurrentScore, this.CurrentCountDefeatEnemy, this.CurrentCountGoalHockeyToEnemy, () => SceneManager.LoadScene("SantaroGameOver")));
+        StartCoroutine(this.networkManager.UpdatePlayerDataOnFinishOneGame(PlayerPrefs.GetString("AccountToken"), this.CurrentScore, this.CurrentCountGoalHockeyToEnemy, () => SceneManager.LoadScene("SantaroGameOver")));
+        //StartCoroutine(this.networkSample.UpdateAchievement(PlayerPrefs.GetString("AccountToken"), this.CurrentScore, this.CurrentCountDefeatEnemy, this.CurrentCountGoalHockeyToEnemy, () => SceneManager.LoadScene("SantaroGameOver")));
     }
 
 }

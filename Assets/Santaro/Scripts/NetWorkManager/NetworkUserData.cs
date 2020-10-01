@@ -27,10 +27,10 @@ namespace Santaro.Networking
         public NetworkUserData(NCMBObject userData)
         {
             this.playerName = userData["PlayerName"].ToString();
-            this.highScore = (int)userData["HighScore"];
-            this.totalScore = (int)userData["TotalScore"];
-            this.totalPlayCount = (int)userData["TotalPlayCount"];
-            this.totalGoalToEnemyCount = (int)userData["TotalGoalToEnemyCount"];
+            this.highScore = int.Parse(userData["HighScore"].ToString());
+            this.totalScore = int.Parse(userData["TotalScore"].ToString());
+            this.totalPlayCount = int.Parse(userData["TotalPlayCount"].ToString());
+            this.totalGoalToEnemyCount = int.Parse(userData["TotalGoalToEnemyCount"].ToString());
         }
     }
 }

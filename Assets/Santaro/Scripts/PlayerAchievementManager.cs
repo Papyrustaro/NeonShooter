@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Santaro.Networking;
 
 /// <summary>
 /// プレイヤーの実績を確認するシーンにおく。Awakeで通信し、textを書き換える。
@@ -10,7 +11,7 @@ using UnityEngine.SceneManagement;
 public class PlayerAchievementManager : MonoBehaviour
 {
     [SerializeField] private Text playerAchievementText;
-    [SerializeField] private NetworkSample networkSample;
+    [SerializeField] private NetworkManager networkManager;
 
     private void Awake()
     {
@@ -20,15 +21,15 @@ public class PlayerAchievementManager : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(this.networkSample.GetAchievement(PlayerPrefs.GetString("AccountToken"), (a) =>
+        StartCoroutine(this.networkManager.GetUserData(PlayerPrefs.GetString("AccountToken"), (userData) =>
         {
             this.playerAchievementText.text =
-            "名前:" + a.user_name + "\n" +
-            "ハイスコア:" + a.high_score.ToString() + "\n" +
-            "総スコア:" + a.total_score.ToString() + "\n" +
-            "倒した敵の総数:" + a.enemy_num.ToString() + "\n" +
-            "総ゴール数:" + a.goal_num.ToString() + "\n" +
-            "総プレイ数:" + a.play_num.ToString();
+            "名前:" + userData.PlayerName.ToString() + "\n" +
+            "ハイスコア:" + userData.HighScore.ToString() + "\n" +
+            "総スコア:" + userData.TotalScore.ToString() + "\n" +
+            //"倒した敵の総数:" +  + "\n" +
+            "総ゴール数:" + userData.TotalGoalToEnemyCount.ToString() + "\n" +
+            "総プレイ数:" + userData.TotalPlayCount.ToString();
         }));
     }
 

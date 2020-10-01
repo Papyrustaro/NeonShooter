@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 using UnityEngine.Networking;
 using UnityEngine.UI;
-
+using Santaro.Networking;
 
 public class GameOverSceneManager : MonoBehaviour
 {
@@ -12,12 +12,12 @@ public class GameOverSceneManager : MonoBehaviour
     [SerializeField] private Text highScoreRankingPlayerNameText;
     [SerializeField] private Text highScoreRankingScoreValueText;
 
-    [SerializeField] private Text totalPlayCountPlayerNameText;
-    [SerializeField] private Text totalPlayCountValueText;
+    [SerializeField] private Text totalPlayCountRankingPlayerNameText;
+    [SerializeField] private Text totalPlayCountRankingValueText;
 
-    [SerializeField] private Text totalScorePlayerNameText;
-    [SerializeField] private Text totalScoreValueText;
-    [SerializeField] private NetworkSample networkSample;
+    [SerializeField] private Text totalScoreRankingPlayerNameText;
+    [SerializeField] private Text totalScoreRankingValueText;
+    [SerializeField] private NetworkManager networkManager;
 
     [SerializeField] private GameObject[] rankingScrollView;
     [SerializeField] private Text titleText;
@@ -32,45 +32,37 @@ public class GameOverSceneManager : MonoBehaviour
     {
         this.highScoreRankingScoreValueText.text = "";
         this.highScoreRankingPlayerNameText.text = "";
-        this.totalScorePlayerNameText.text = "";
-        this.totalScoreValueText.text = "";
-        this.totalPlayCountValueText.text = "";
-        this.totalPlayCountPlayerNameText.text = "";
+        this.totalScoreRankingPlayerNameText.text = "";
+        this.totalScoreRankingValueText.text = "";
+        this.totalPlayCountRankingValueText.text = "";
+        this.totalPlayCountRankingPlayerNameText.text = "";
         //ここでサーバーからランキングデータを取得する。
         //playerNameを代入。
         //this.highScoreRankingPlayerNameText.text += "hoge";
-        StartCoroutine(this.networkSample.GetRanking(PlayerPrefs.GetString("AccountToken"), NetworkSample.RankingType.HightScore,(r) =>
+        StartCoroutine(this.networkManager.GetRanking(NetworkManager.E_UserData.HighScore, (usersData) =>
         {
-            for(int i = 0; i < r.ranks.Count; i++)
+            for(int i = 0; i < usersData.Count; i++)
             {
-                //Debug.Log(r.ranks[i].user_name);
-                this.highScoreRankingPlayerNameText.text += (i+1).ToString() + "." + r.ranks[i].user_name + "\n";
-                this.highScoreRankingScoreValueText.text += r.ranks[i].value + "\n";
+                this.highScoreRankingPlayerNameText.text += (i + 1).ToString() + "." + usersData[i].PlayerName + "\n";
+                this.highScoreRankingScoreValueText.text += usersData[i].HighScore + "\n";
             }
         }));
-
-        StartCoroutine(this.networkSample.GetRanking(PlayerPrefs.GetString("AccountToken"), NetworkSample.RankingType.PlayNum, (r) =>
+        StartCoroutine(this.networkManager.GetRanking(NetworkManager.E_UserData.TotalScore, (usersData) =>
         {
-
-            for (int i = 0; i < r.ranks.Count; i++)
+            for (int i = 0; i < usersData.Count; i++)
             {
-                Debug.Log(r.ranks[i].user_name);
-                this.totalPlayCountPlayerNameText.text += (i+1).ToString() + "." + r.ranks[i].user_name + "\n";
-                this.totalPlayCountValueText.text += r.ranks[i].value + "\n";
+                this.totalScoreRankingPlayerNameText.text += (i + 1).ToString() + "." + usersData[i].PlayerName + "\n";
+                this.totalScoreRankingValueText.text += usersData[i].TotalScore + "\n";
             }
         }));
-
-        StartCoroutine(this.networkSample.GetRanking(PlayerPrefs.GetString("AccountToken"), NetworkSample.RankingType.TotalScore, (r) =>
+        StartCoroutine(this.networkManager.GetRanking(NetworkManager.E_UserData.TotalPlayCount, (usersData) =>
         {
-            for (int i = 0; i < r.ranks.Count; i++)
+            for (int i = 0; i < usersData.Count; i++)
             {
-                //Debug.Log(r.ranks[i].user_name);
-                this.totalScorePlayerNameText.text += (i+1).ToString() + "." + r.ranks[i].user_name + "\n";
-                this.totalScoreValueText.text += r.ranks[i].value + "\n";
+                this.totalPlayCountRankingPlayerNameText.text += (i + 1).ToString() + "." + usersData[i].PlayerName + "\n";
+                this.totalPlayCountRankingValueText.text += usersData[i].TotalPlayCount + "\n";
             }
         }));
-        //scoreValueを代入。
-        //this.highScoreRankingScoreValueText.text = "hoge";
         
     }
 
