@@ -41,6 +41,7 @@ public class TitleManager : MonoBehaviour
         {
             this.OnLogout();
         }
+        if(!StageStaticData.inputPlayerMovementByKeybord) this.changePlayerMoveInputText.text = "キーボード操作に";
     }
 
     private void Update()
@@ -55,15 +56,10 @@ public class TitleManager : MonoBehaviour
         }*/
 
         //ログインしている　かつ　Enterが押されたときにSantaroMainに遷移
-        if(this.inputPlayerName && this.createdAccount && Input.GetKeyDown(KeyCode.Return))
+        if(this.inputPlayerName && this.createdAccount && Input.GetKeyDown(KeyCode.Space))
         {
             SEManager.Instance.Play(SEPath.DECISION1, volumeRate: 0.7f);
             SceneManager.LoadScene("SantaroMain");
-        }
-
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            StartCoroutine(this.networkManager.UpdatePlayerName("Hoge", PlayerPrefs.GetString("AccountToken"), () => Debug.Log("complete")));
         }
     }
 
@@ -118,7 +114,7 @@ public class TitleManager : MonoBehaviour
     {
         this.playerNameInputField.gameObject.SetActive(false);
         this.createdAccount = true;
-        this.announceText.text = "Enterでスタート";
+        this.announceText.text = "Spaceでスタート";
         this.showPlayerAchievementButton.gameObject.SetActive(true);
         this.inputPlayerName = true;
         this.optionButton.SetActive(true);
@@ -162,6 +158,7 @@ public class TitleManager : MonoBehaviour
         {
             this.changePlayerMoveInputText.text = "キーボード操作に";
         }
+        PlayerManager.Instance.ChangePlayerMovementInput();
     }
 
     public void GoOption()
@@ -171,6 +168,6 @@ public class TitleManager : MonoBehaviour
 
     public void GoManual()
     {
-        SceneManager.LoadScene("SantaroManual");
+        SceneManager.LoadScene("SantaroManual");   
     }
 }

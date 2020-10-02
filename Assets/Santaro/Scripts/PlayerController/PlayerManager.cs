@@ -29,6 +29,7 @@ public class PlayerManager : MonoBehaviour
 
         this.playerMover = GetComponent<PlayerMover>();
         this.playerMouseMover = GetComponent<PlayerMouseMover>();
+
         if (StageStaticData.inputPlayerMovementByKeybord)
         {
             this.playerMouseMover.enabled = false;
@@ -39,6 +40,22 @@ public class PlayerManager : MonoBehaviour
             this.playerMover.enabled = false;
             this.playerMouseMover.enabled = true;
             GetComponent<Rigidbody>().mass = 100000f;
+        }
+    }
+
+    public void ChangePlayerMovementInput()
+    {
+        if (this.playerMover.enabled)
+        {
+            this.playerMover.enabled = false;
+            this.playerMouseMover.enabled = true;
+            GetComponent<Rigidbody>().mass = 100000f;
+        }
+        else
+        {
+            this.playerMouseMover.enabled = false;
+            this.playerMover.enabled = true;
+            GetComponent<Rigidbody>().mass = 1f;
         }
     }
 }

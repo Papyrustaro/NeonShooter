@@ -25,6 +25,7 @@ public class GameOverSceneManager : MonoBehaviour
     private int currentScrollViewIndex = 0;
     private void Awake()
     {
+        Time.timeScale = 1f;
         this.playerResultText.text = "あなたのスコア: " + StageStaticData.scoreThisTime;
     }
 

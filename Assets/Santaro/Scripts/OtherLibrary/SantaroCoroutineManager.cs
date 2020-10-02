@@ -19,4 +19,19 @@ public class SantaroCoroutineManager
         }
         action();
     }
+
+    public static IEnumerator DelayMethodRealTime(float waitTime, Action action)
+    {
+        yield return new WaitForSecondsRealtime(waitTime);
+        action();
+    }
+
+    public static IEnumerator DelayMethodRealTime(int delayFrameCount, Action action)
+    {
+        for (int i = 0; i < delayFrameCount; i++)
+        {
+            yield return null;
+        }
+        action();
+    }
 }
