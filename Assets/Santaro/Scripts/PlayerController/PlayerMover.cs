@@ -20,7 +20,7 @@ public class PlayerMover : MonoBehaviour
     private void Update()
     {
         _rigidbody.velocity = new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"), 0f).normalized * this.moveSpeed;
-        if(this.canAcceleration && Input.GetKeyDown(KeyCode.K))
+        if(this.canAcceleration && (Input.GetKeyDown(KeyCode.K) || Input.GetKeyDown(KeyCode.C)))
         {
             this.moveSpeed *= 3f;
             this.canAcceleration = false;

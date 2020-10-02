@@ -21,6 +21,7 @@ public class TitleManager : MonoBehaviour
     [SerializeField] private Text announceText;
     [SerializeField] private NetworkManager networkManager;
     [SerializeField] private Text changePlayerMoveInputText;
+    [SerializeField] private GameObject optionButton;
 
     /// <summary>
     /// すでにアカウントを作成し、ログインしているか
@@ -121,18 +122,20 @@ public class TitleManager : MonoBehaviour
     {
         this.playerNameInputField.gameObject.SetActive(false);
         this.createdAccount = true;
-        this.announceText.text = "Play Enter...";
+        this.announceText.text = "Enterでスタート";
         this.showPlayerAchievementButton.gameObject.SetActive(true);
         this.inputPlayerName = true;
+        this.optionButton.SetActive(true);
     }
 
     public void OnLogout()
     {
         this.playerNameInputField.gameObject.SetActive(true);
         this.createdAccount = false;
-        this.announceText.text = "Input YourName...";
+        this.announceText.text = "名前を入力してください";
         this.showPlayerAchievementButton.gameObject.SetActive(false);
         this.inputPlayerName = false;
+        this.optionButton.SetActive(false);
     }
 
     /// <summary>
@@ -142,7 +145,7 @@ public class TitleManager : MonoBehaviour
     {
         this.inputPlayerName = false;
         this.playerNameInputField.gameObject.SetActive(true);
-        this.announceText.text = "Input YourName...";
+        this.announceText.text = "名前を入力してください";
         this.showPlayerAchievementButton.gameObject.SetActive(false);
     }
 

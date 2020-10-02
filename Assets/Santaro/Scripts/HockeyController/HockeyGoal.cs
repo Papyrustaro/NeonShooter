@@ -24,7 +24,7 @@ public class HockeyGoal : MonoBehaviour
                 StartCoroutine(SantaroCoroutineManager.DelayMethod(this.lightingTimeOnGoal, () => this.lampLighting.BloomLightingOff()));
                 Debug.Log("Player側のゴールにシュゥウウウ！！！超エキサイティン！！！");
                 SEManager.Instance.Play(SEPath.GOAL_TO_PLAYER, volumeRate: 0.7f);
-                PlayerDamageController.Instance.PlayerHP--;
+                PlayerDamageController.Instance.Damaged();
             }
             else
             {

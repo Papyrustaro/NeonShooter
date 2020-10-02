@@ -86,6 +86,11 @@ public class AutoEnemySpawner : MonoBehaviour
     {
         Instantiate(this.bossPrefabs[bossIndex], this.transform.position, Quaternion.identity);
     }
+
+    public void SetSpawnInterval(float intervalTime)
+    {
+        this.spawnInterval = intervalTime;
+    }
     public enum E_Boss
     {
         Boss0 = 0,

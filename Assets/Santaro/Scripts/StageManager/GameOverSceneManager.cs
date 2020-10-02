@@ -72,13 +72,12 @@ public class GameOverSceneManager : MonoBehaviour
     /// </summary>
     public void Tweeting()
     {
-        string tweetText = "";
-        tweetText += StageStaticData.scoreThisTime + "スコア獲得!!";
+        string tweetText = StageStaticData.scoreThisTime.ToString() + "スコア獲得!!";
 
         string url = "https://twitter.com/intent/tweet?"
             + "text=" + tweetText
-            + "&url=" + "https://www.cyberagent.co.jp/careers/students/event/detail/id=24427"
-            + "&hashtags=" + "ShootingHockey,unityroom";
+            + "&url=" + "https://unityroom.com/games/neonshooter"
+            + "&hashtags=" + "NeonShooter,unityroom";
 
 #if UNITY_EDITOR
         Application.OpenURL(url);

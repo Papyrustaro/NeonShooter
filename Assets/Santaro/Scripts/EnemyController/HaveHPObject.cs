@@ -66,7 +66,10 @@ public class HaveHPObject : MonoBehaviour
             //ホッケーの球には必ずDamageToHPObjectをアタッチすること！
             DamageToHPObject attacker = other.GetComponent<DamageToHPObject>();
             this.hp -= attacker.DamageValue;
-            Instantiate(this.damageEffect, this.transform.position, Quaternion.identity);
+            SEManager.Instance.Play(SEPath.EXPLOSION_MISSILE, 0.2f);
+            this._meshRenderer.material = this.onDamageMaterial;
+            StartCoroutine(SantaroCoroutineManager.DelayMethod(0.2f, () => this._meshRenderer.material = this.defaultMaterial));
+            //Instantiate(this.damageEffect, this.transform.position, Quaternion.identity);
             if (this.hp <= 0)
             {
                 this.OnHPLessThanZero();

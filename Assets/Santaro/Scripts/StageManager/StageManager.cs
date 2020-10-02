@@ -56,6 +56,15 @@ public class StageManager : MonoBehaviour
 
     public void AddScore(int addScoreValue)
     {
+        if(this.CurrentScore < 30000 && (this.CurrentScore + addScoreValue) >= 30000)
+        {
+            this.autoEnemySpawner.SetSpawnInterval(4f);
+        }
+        if(this.CurrentScore < 40000 && (this.CurrentScore + addScoreValue) >= 40000)
+        {
+            this.autoEnemySpawner.SetSpawnInterval(3f);
+        }
+
         int level = GetCurrentLevel();
         this.CurrentScore += addScoreValue;
         this.currentScoreText.text = "Score: " + this.CurrentScore;
@@ -77,9 +86,9 @@ public class StageManager : MonoBehaviour
     /// <returns>現在のレベル(最小は1)</returns>
     public int GetCurrentLevel()
     {
-        if (this.CurrentScore < 500) return 1;
-        else if (this.CurrentScore < 1000) return 2;
-        else if (this.CurrentScore < 1500) return 3;
+        if (this.CurrentScore < 700) return 1;
+        else if (this.CurrentScore < 5000) return 2;
+        else if (this.CurrentScore < 20000) return 3;
         else return 4;
     }
 

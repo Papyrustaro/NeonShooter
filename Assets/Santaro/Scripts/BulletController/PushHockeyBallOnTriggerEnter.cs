@@ -5,8 +5,8 @@ using UnityEngine;
 public class PushHockeyBallOnTriggerEnter : MonoBehaviour
 {
     [SerializeField] private Vector2 pushDirection = Vector2.right;
-    [SerializeField] private float pushPower = 1f;
     [SerializeField] private bool destroyMeOnTriggerEnter = true;
+    private float pushPower = 5f;
     private bool isPlayerBullet;
     private void Awake()
     {

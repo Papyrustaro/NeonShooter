@@ -12,7 +12,7 @@ public class OptionManager : MonoBehaviour
     [SerializeField] private Slider changeSEVolumeSlider;
     [SerializeField] private InputField playerNameInputField;
     [SerializeField] private NetworkManager networkManager;
-
+    [SerializeField] private GameObject changeNameAnnounceText;
     private void Start()
     {
         this.changeBGMVolumeSlider.value = StageStaticData.bgmVolumeRate;
@@ -49,6 +49,8 @@ public class OptionManager : MonoBehaviour
             StartCoroutine(this.networkManager.UpdatePlayerName(this.playerNameInputField.text, PlayerPrefs.GetString("AccountToken"), () =>
             {
                 PlayerPrefs.SetString("PlayerName", this.playerNameInputField.text);
+                this.changeNameAnnounceText.SetActive(true);
+                StartCoroutine(SantaroCoroutineManager.DelayMethod(2f, () => this.changeNameAnnounceText.SetActive(false)));
             }));
         }
         else
@@ -58,6 +60,8 @@ public class OptionManager : MonoBehaviour
             {
                 PlayerPrefs.SetString("PlayerName", this.playerNameInputField.text);
                 PlayerPrefs.SetString("AccountToken", s);
+                this.changeNameAnnounceText.SetActive(true);
+                StartCoroutine(SantaroCoroutineManager.DelayMethod(2f, () => this.changeNameAnnounceText.SetActive(false)));
             }));
         }
     }

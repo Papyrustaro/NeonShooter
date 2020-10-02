@@ -20,7 +20,9 @@ public class PlayerDamageController : MonoBehaviour
     [SerializeField] private int playerHp = 3;
     [SerializeField] private MeshRenderer _meshRenderer;
     [SerializeField] private Material materialOnDamaged;
+    [SerializeField] private GameObject destroyExplosion;
     private Material defaultMaterial;
+    private bool gameOver = false;
 
     public static PlayerDamageController Instance { get; private set; }
 
@@ -73,29 +75,37 @@ public class PlayerDamageController : MonoBehaviour
             //とりあえず敵の攻撃gameObjectを消す
             Destroy(other.transform.root.gameObject);
 
-            
-            this.playerHp--;
-            if(StageManager.Instance != null)
-            {
-                StageManager.Instance.SetPlayerHPText(this.playerHp);
-            }
-            if(this.playerHp <= 0)
-            {
-                //破壊処理(gameOver処理)
-                this.GameOver();
-            }
-            else
-            {
-                this.notHaveDamage = true;
-                this._meshRenderer.material = this.materialOnDamaged;
-                SEManager.Instance.Play(SEPath.EXPLOSION_MISSILE, 0.3f);
-                DOVirtual.DelayedCall(this.notHaveDamageTimeFromHaveDamaged, () => { this.notHaveDamage = false; this._meshRenderer.material = this.defaultMaterial; });
-            }
+            this.Damaged();
         }
     }
 
     public void GameOver()
     {
-        StageManager.Instance.GameOver();
+        if (this.gameOver) return;
+        this.gameOver = true;
+        Instantiate(this.destroyExplosion, this.transform.position, Quaternion.identity);
+        SEManager.Instance.Play(SEPath.EXPLOSION_PLAYER, volumeRate: 0.5f);
+        StartCoroutine(SantaroCoroutineManager.DelayMethod(0.5f, () => StageManager.Instance.GameOver()));
+    }
+
+    public void Damaged()
+    {
+        this.playerHp--;
+        if (StageManager.Instance != null)
+        {
+            StageManager.Instance.SetPlayerHPText(this.playerHp);
+        }
+        if (this.playerHp <= 0)
+        {
+            //破壊処理(gameOver処理)
+            this.GameOver();
+        }
+        else
+        {
+            this.notHaveDamage = true;
+            this._meshRenderer.material = this.materialOnDamaged;
+            SEManager.Instance.Play(SEPath.EXPLOSION_MISSILE, 0.3f);
+            DOVirtual.DelayedCall(this.notHaveDamageTimeFromHaveDamaged, () => { this.notHaveDamage = false; this._meshRenderer.material = this.defaultMaterial; });
+        }
     }
 }
