@@ -27,6 +27,7 @@ public class PlayerMouseMover : MonoBehaviour
     private void FixedUpdate()
     {
         _rigidbody.velocity = (this.mousePosition - this.transform.position) * 10f;
+        if (_rigidbody.velocity.magnitude > 50f) _rigidbody.velocity *= (50f / _rigidbody.velocity.magnitude);
         Vector3 movePosition = this.mousePosition;
         if (isStageScene)
         {
