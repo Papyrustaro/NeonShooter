@@ -1,11 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerMouseMover : MonoBehaviour
 {
     [SerializeField] private Vector2 canMoveMinPosition;
     [SerializeField] private Vector2 canMoveMaxPosition;
+    private bool isStageScene = true;
 
     private Rigidbody _rigidbody;
     private Vector3 mousePosition;
@@ -13,6 +15,7 @@ public class PlayerMouseMover : MonoBehaviour
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
+        if (SceneManager.GetActiveScene().name != "SantaroMain") this.isStageScene = false;
     }
     private void Update()
     {
@@ -25,8 +28,12 @@ public class PlayerMouseMover : MonoBehaviour
     {
         _rigidbody.velocity = (this.mousePosition - this.transform.position) * 10f;
         Vector3 movePosition = this.mousePosition;
-        movePosition = new Vector2(Mathf.Min(this.canMoveMaxPosition.x, movePosition.x), Mathf.Min(this.canMoveMaxPosition.y, movePosition.y));
-        movePosition = new Vector2(Mathf.Max(this.canMoveMinPosition.x, movePosition.x), Mathf.Max(this.canMoveMinPosition.y, movePosition.y));
+        if (isStageScene)
+        {
+            movePosition = new Vector2(Mathf.Min(this.canMoveMaxPosition.x, movePosition.x), Mathf.Min(this.canMoveMaxPosition.y, movePosition.y));
+            movePosition = new Vector2(Mathf.Max(this.canMoveMinPosition.x, movePosition.x), Mathf.Max(this.canMoveMinPosition.y, movePosition.y));
+        }
+        
         _rigidbody.MovePosition(movePosition);
     }
 }

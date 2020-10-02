@@ -164,4 +164,14 @@ public class TitleManager : MonoBehaviour
             this.changePlayerMoveInputText.text = "キーボード操作に";
         }
     }
+
+    public void GoOption()
+    {
+        SceneManager.LoadScene("SantaroOption");
+    }
+
+    public void GoManual()
+    {
+        SceneManager.LoadScene("SantaroManual");
+    }
 }
