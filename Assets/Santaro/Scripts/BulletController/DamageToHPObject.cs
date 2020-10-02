@@ -9,6 +9,7 @@ public class DamageToHPObject : MonoBehaviour
     /// </summary>
     [SerializeField] private int damageValue = 1;
     [SerializeField] private bool destroyOnAttack = true;
+    [SerializeField] private bool disableOnAttack = false;
 
     public int DamageValue => this.damageValue;
 
@@ -17,6 +18,7 @@ public class DamageToHPObject : MonoBehaviour
     /// </summary>
     public void OnAttack()
     {
-        if(destroyOnAttack) Destroy(this.transform.root.gameObject);
+        if(this.destroyOnAttack) Destroy(this.transform.root.gameObject);
+        if (this.disableOnAttack) this.transform.parent.gameObject.SetActive(false);
     }
 }

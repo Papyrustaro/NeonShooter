@@ -21,13 +21,14 @@ public class PushHockeyBallOnTriggerEnter : MonoBehaviour
             other.GetComponent<Rigidbody>().AddForce(new Vector3(this.pushDirection.x, this.pushDirection.y, 0f) * this.pushPower, ForceMode.Impulse);
             if (this.destroyMeOnTriggerEnter)
             {
-                Destroy(this.transform.root.gameObject);
+                if (this.isPlayerBullet) this.transform.parent.gameObject.SetActive(false);
+                else Destroy(this.transform.root.gameObject);
             }
         }
         if (this.isPlayerBullet && other.CompareTag("AttackOfEnemy"))
         {
             Destroy(other.transform.root.gameObject);
-            Destroy(this.transform.root.gameObject);
+            this.transform.parent.gameObject.SetActive(false);
         }
 
     }
