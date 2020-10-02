@@ -23,7 +23,7 @@ public class AutoInstantiateConstantInterval : MonoBehaviour
         this.countTime += Time.deltaTime;
         if(this.countTime > this.instantiateInterval)
         {
-            SEManager.Instance.Play(SEPath.SHOT0);
+            SEManager.Instance.Play(SEPath.SHOT0, volumeRate: 0.15f);
             foreach(GameObject obj in this.instantiatePrefab)
             {
                 Instantiate(obj, this.instantiatePosition.position, Quaternion.identity);

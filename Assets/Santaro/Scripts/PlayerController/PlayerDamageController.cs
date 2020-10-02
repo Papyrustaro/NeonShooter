@@ -85,7 +85,7 @@ public class PlayerDamageController : MonoBehaviour
         this.gameOver = true;
         Instantiate(this.destroyExplosion, this.transform.position, Quaternion.identity);
         SEManager.Instance.Play(SEPath.EXPLOSION_PLAYER, volumeRate: 0.5f);
-        StartCoroutine(SantaroCoroutineManager.DelayMethod(0.5f, () => StageManager.Instance.GameOver()));
+        StartCoroutine(SantaroCoroutineManager.DelayMethod(0.2f, () => StageManager.Instance.GameOver()));
     }
 
     public void Damaged()

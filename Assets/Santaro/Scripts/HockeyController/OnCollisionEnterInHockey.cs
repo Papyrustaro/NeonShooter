@@ -13,5 +13,9 @@ public class OnCollisionEnterInHockey : MonoBehaviour
             Instantiate(this.hitSparkParticle, collision.contacts[0].point, Quaternion.identity);
             SEManager.Instance.Play(SEPath.COLLISION_HOCKEY, volumeRate: 0.3f);
         }
+        if (collision.transform.CompareTag("Wall"))
+        {
+            SEManager.Instance.Play(SEPath.COLLISION_HOCKEY2, volumeRate: 0.07f);
+        }
     }
 }

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System;
+using KanKikuchi.AudioManager;
 
 /// <summary>
 /// タイトル画面のUI、入力データ、サーバー通信あたりの処理全般
@@ -40,28 +41,23 @@ public class TitleManager : MonoBehaviour
         {
             this.OnLogout();
         }
-
-        /*StartCoroutine(this.networkSample.GetUserInfo(PlayerPrefs.GetString("AccountToken"), (u) =>
-        {
-            Debug.Log("id: " + u.id);
-            Debug.Log("name: " + u.name);
-        }));*/
     }
 
     private void Update()
     {
         //デバッグ用。escでtokenデータ削除。
-        if (Input.GetKeyDown(KeyCode.Escape))
+        /*if (Input.GetKeyDown(KeyCode.Escape))
         {
             Debug.Log("この端末のtokenデータを削除しました");
             PlayerPrefs.DeleteKey("AccountToken");
             PlayerPrefs.DeleteKey("PlayerName");
             this.OnLogout();
-        }
+        }*/
 
         //ログインしている　かつ　Enterが押されたときにSantaroMainに遷移
         if(this.inputPlayerName && this.createdAccount && Input.GetKeyDown(KeyCode.Return))
         {
+            SEManager.Instance.Play(SEPath.DECISION1, volumeRate: 0.7f);
             SceneManager.LoadScene("SantaroMain");
         }
 
