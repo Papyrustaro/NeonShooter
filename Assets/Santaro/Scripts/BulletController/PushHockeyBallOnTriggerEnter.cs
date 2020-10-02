@@ -7,10 +7,12 @@ public class PushHockeyBallOnTriggerEnter : MonoBehaviour
     [SerializeField] private Vector2 pushDirection = Vector2.right;
     [SerializeField] private float pushPower = 1f;
     [SerializeField] private bool destroyMeOnTriggerEnter = true;
-
+    private bool isPlayerBullet;
     private void Awake()
     {
         this.pushDirection = this.pushDirection.normalized;
+        if (this.CompareTag("AttackOfPlayer")) this.isPlayerBullet = true;
+
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -21,6 +23,11 @@ public class PushHockeyBallOnTriggerEnter : MonoBehaviour
             {
                 Destroy(this.transform.root.gameObject);
             }
+        }
+        if (this.isPlayerBullet && other.CompareTag("AttackOfEnemy"))
+        {
+            Destroy(other.transform.root.gameObject);
+            Destroy(this.transform.root.gameObject);
         }
 
     }
