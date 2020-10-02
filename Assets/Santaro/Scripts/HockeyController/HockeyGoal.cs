@@ -41,8 +41,16 @@ public class HockeyGoal : MonoBehaviour
                 }
 
             }
-            other.GetComponent<Rigidbody>().velocity = new Vector3(-3f, -3f, 0f);
-            other.transform.root.transform.position = new Vector3(0f, 9f, 0f);
+            if(UnityEngine.Random.Range(0, 2) == 0)
+            {
+                other.GetComponent<Rigidbody>().velocity = new Vector3(-3f, -3f, 0f);
+                other.transform.root.transform.position = new Vector3(0f, 9f, 0f);
+            }
+            else
+            {
+                other.GetComponent<Rigidbody>().velocity = new Vector3(-3f, 3f, 0f);
+                other.transform.root.transform.position = new Vector3(0f, -9f, 0f);
+            }
         }
     }
 }

@@ -4,6 +4,7 @@ using UnityEngine;
 using DG.Tweening;
 using UnityEngine.SceneManagement;
 using KanKikuchi.AudioManager;
+using System;
 
 /// <summary>
 /// プレイヤーの被弾処理
@@ -17,6 +18,9 @@ public class PlayerDamageController : MonoBehaviour
 
     //とりあえず、n回被弾したらgameOverという設定。
     [SerializeField] private int playerHp = 3;
+    [SerializeField] private MeshRenderer _meshRenderer;
+    [SerializeField] private Material materialOnDamaged;
+    private Material defaultMaterial;
 
     public static PlayerDamageController Instance { get; private set; }
 
@@ -56,6 +60,7 @@ public class PlayerDamageController : MonoBehaviour
         {
             throw new System.Exception();
         }
+        this.defaultMaterial = this._meshRenderer.material;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -68,7 +73,7 @@ public class PlayerDamageController : MonoBehaviour
             //とりあえず敵の攻撃gameObjectを消す
             Destroy(other.transform.root.gameObject);
 
-            Debug.Log("player被弾");
+            
             this.playerHp--;
             if(StageManager.Instance != null)
             {
@@ -82,7 +87,9 @@ public class PlayerDamageController : MonoBehaviour
             else
             {
                 this.notHaveDamage = true;
-                DOVirtual.DelayedCall(this.notHaveDamageTimeFromHaveDamaged, () => this.notHaveDamage = false);
+                this._meshRenderer.material = this.materialOnDamaged;
+                SEManager.Instance.Play(SEPath.EXPLOSION_MISSILE, 0.3f);
+                DOVirtual.DelayedCall(this.notHaveDamageTimeFromHaveDamaged, () => { this.notHaveDamage = false; this._meshRenderer.material = this.defaultMaterial; });
             }
         }
     }

@@ -15,6 +15,7 @@ public class StageManager : MonoBehaviour
     [SerializeField] private Text currentScoreText;
     [SerializeField] private Text currentPlayerHPText;
     [SerializeField] private NetworkManager networkManager;
+    [SerializeField] private AutoEnemySpawner autoEnemySpawner;
     public static StageManager Instance { get; private set; }
 
     /// <summary>
@@ -55,8 +56,14 @@ public class StageManager : MonoBehaviour
 
     public void AddScore(int addScoreValue)
     {
+        int level = GetCurrentLevel();
         this.CurrentScore += addScoreValue;
         this.currentScoreText.text = "Score: " + this.CurrentScore;
+        if(level != GetCurrentLevel())
+        {
+            this.autoEnemySpawner.SpawnBoss(level - 1);
+        }
+
     }
 
     public void SetPlayerHPText(int currentPlayerHP)

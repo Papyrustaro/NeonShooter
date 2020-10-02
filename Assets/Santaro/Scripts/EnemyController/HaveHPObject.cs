@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using KanKikuchi.AudioManager;
+using System;
 
 /// <summary>
 /// HPを持ち、HPが0になったら破壊されるObject(PlayerはHPではなく被弾回数という概念)
@@ -18,6 +19,15 @@ public class HaveHPObject : MonoBehaviour
     [SerializeField] private bool canDamageByEnemyAttack = false;
     [SerializeField] private GameObject destroyExplosion;
     [SerializeField] private GameObject damageEffect;
+    [SerializeField] private MeshRenderer _meshRenderer;
+    [SerializeField] private Material onDamageMaterial;
+
+    private Material defaultMaterial;
+
+    private void Awake()
+    {
+        this.defaultMaterial = this._meshRenderer.material;
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -26,7 +36,10 @@ public class HaveHPObject : MonoBehaviour
             DamageToHPObject attacker = other.GetComponent<DamageToHPObject>();
             this.hp -= attacker.DamageValue;
             attacker.OnAttack();
-            Instantiate(this.damageEffect, this.transform.position, Quaternion.identity);
+            SEManager.Instance.Play(SEPath.EXPLOSION_MISSILE, 0.2f);
+            this._meshRenderer.material = this.onDamageMaterial;
+            StartCoroutine(SantaroCoroutineManager.DelayMethod(0.2f, () => this._meshRenderer.material = this.defaultMaterial));
+            //Instantiate(this.damageEffect, this.transform.position, Quaternion.identity);
             if(this.hp <= 0)
             {
                 this.OnHPLessThanZero();
@@ -74,7 +87,7 @@ public class HaveHPObject : MonoBehaviour
         Instantiate(this.destroyExplosion, this.transform.position, Quaternion.identity);
         if(StageManager.Instance != null)
         {
-            SEManager.Instance.Play(SEPath.EXPLOSION_ENEMY);
+            SEManager.Instance.Play(SEPath.EXPLOSION_ENEMY, volumeRate: 0.3f);
             StageManager.Instance.AddScore(this.addScoreOnDestroy);
             StageManager.Instance.CurrentCountDefeatEnemy++;
             Debug.Log("現在の敵を倒した数: " + StageManager.Instance.CurrentCountDefeatEnemy);

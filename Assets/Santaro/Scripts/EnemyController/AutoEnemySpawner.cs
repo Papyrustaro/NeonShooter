@@ -12,13 +12,13 @@ public class AutoEnemySpawner : MonoBehaviour
     [SerializeField] private GameObject[] enemyPrefabsInLevel2;
     [SerializeField] private GameObject[] enemyPrefabsInLevel3;
     [SerializeField] private GameObject[] enemyPrefabsInLevel4;
+    [SerializeField] private GameObject[] bossPrefabs;
     [SerializeField] private Vector2 maxInstantiateDistanceFromCenter;
     [SerializeField] private float spawnInterval = 3f;
     private Vector3 spawnCenter;
     private float countTime = 0f;
 
     public static AutoEnemySpawner Instance { get; private set; }
-
     private void Awake()
     {
         if(Instance == null)
@@ -71,5 +71,25 @@ public class AutoEnemySpawner : MonoBehaviour
             this.spawnCenter + new Vector3(UnityEngine.Random.Range(-1f*this.maxInstantiateDistanceFromCenter.x, this.maxInstantiateDistanceFromCenter.x),
             UnityEngine.Random.Range(-1f*this.maxInstantiateDistanceFromCenter.y, this.maxInstantiateDistanceFromCenter.y), 0f), 
             Quaternion.identity);
+    }
+
+    /// <summary>
+    /// ボスGameObjectを敵陣真ん中に生成。
+    /// </summary>
+    /// <param name="bossType">生成するprefab</param>
+    public void SpawnBoss(E_Boss bossType)
+    {
+        Instantiate(this.bossPrefabs[(int)bossType], this.transform.position, Quaternion.identity);
+    }
+
+    public void SpawnBoss(int bossIndex)
+    {
+        Instantiate(this.bossPrefabs[bossIndex], this.transform.position, Quaternion.identity);
+    }
+    public enum E_Boss
+    {
+        Boss0 = 0,
+        Boss1,
+        Boss2
     }
 }
