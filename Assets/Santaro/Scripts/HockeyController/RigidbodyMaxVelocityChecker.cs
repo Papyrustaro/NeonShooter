@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class RigidbodyMaxVelocityChecker : MonoBehaviour
 {
-    [SerializeField] private float maxSpeed = 10f;
+    [SerializeField] private float maxSpeed = 15f;
+    [SerializeField] private float decelerateSpeed = 1.5f;
     private Rigidbody _rigidbody;
 
     private void Awake()
@@ -16,7 +17,8 @@ public class RigidbodyMaxVelocityChecker : MonoBehaviour
     {
         if(_rigidbody.velocity.magnitude > this.maxSpeed)
         {
-            _rigidbody.velocity *= (this.maxSpeed / _rigidbody.velocity.magnitude);
+            _rigidbody.velocity -= _rigidbody.velocity.normalized * this.decelerateSpeed;
+            //_rigidbody.velocity *= (this.maxSpeed / _rigidbody.velocity.magnitude);
         }
     }
 }
