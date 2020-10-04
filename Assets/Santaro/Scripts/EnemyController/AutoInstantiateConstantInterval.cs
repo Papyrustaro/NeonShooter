@@ -18,6 +18,10 @@ public class AutoInstantiateConstantInterval : MonoBehaviour
     [SerializeField] private float instantiateInterval = 2f;
     private float countTime = 0f;
 
+    private void OnEnable()
+    {
+        this.countTime = 0f;
+    }
     private void Update()
     {
         this.countTime += Time.deltaTime;
@@ -26,7 +30,8 @@ public class AutoInstantiateConstantInterval : MonoBehaviour
             SEManager.Instance.Play(SEPath.SHOT0, volumeRate: 0.15f);
             foreach(GameObject obj in this.instantiatePrefab)
             {
-                Instantiate(obj, this.instantiatePosition.position, Quaternion.identity);
+                ObjectPoolManager.Instance.InstantiateGameObject(obj, this.instantiatePosition.position, Quaternion.identity);
+                //Instantiate(obj, this.instantiatePosition.position, Quaternion.identity);
             }
             
             this.countTime = 0f;

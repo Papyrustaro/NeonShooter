@@ -18,7 +18,7 @@ public class DamageToHPObject : MonoBehaviour
     /// </summary>
     public void OnAttack()
     {
-        if(this.destroyOnAttack) Destroy(this.transform.root.gameObject);
+        if (this.destroyOnAttack) this.transform.parent.gameObject.SetActive(false);
         if (this.disableOnAttack) this.transform.parent.gameObject.SetActive(false);
     }
 }

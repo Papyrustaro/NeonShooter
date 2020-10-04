@@ -22,12 +22,12 @@ public class PushHockeyBallOnTriggerEnter : MonoBehaviour
             if (this.destroyMeOnTriggerEnter)
             {
                 if (this.isPlayerBullet) this.transform.parent.gameObject.SetActive(false);
-                else Destroy(this.transform.root.gameObject);
+                else this.transform.parent.gameObject.SetActive(false);
             }
         }
         if (this.isPlayerBullet && other.CompareTag("AttackOfEnemy"))
         {
-            Destroy(other.transform.root.gameObject);
+            other.transform.parent.gameObject.SetActive(false);
             this.transform.parent.gameObject.SetActive(false);
         }
 

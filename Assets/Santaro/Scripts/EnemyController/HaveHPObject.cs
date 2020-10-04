@@ -21,8 +21,14 @@ public class HaveHPObject : MonoBehaviour
     [SerializeField] private GameObject damageEffect;
     [SerializeField] private MeshRenderer _meshRenderer;
     [SerializeField] private Material onDamageMaterial;
+    private int currentHp;
 
     private Material defaultMaterial;
+
+    private void OnEnable()
+    {
+        this.currentHp = this.hp;
+    }
 
     private void Awake()
     {
@@ -34,13 +40,13 @@ public class HaveHPObject : MonoBehaviour
         if (other.CompareTag("AttackOfPlayer"))
         {
             DamageToHPObject attacker = other.GetComponent<DamageToHPObject>();
-            this.hp -= attacker.DamageValue;
+            this.currentHp -= attacker.DamageValue;
             attacker.OnAttack();
             SEManager.Instance.Play(SEPath.EXPLOSION_MISSILE, 0.2f);
             this._meshRenderer.material = this.onDamageMaterial;
             StartCoroutine(SantaroCoroutineManager.DelayMethod(0.2f, () => this._meshRenderer.material = this.defaultMaterial));
             //Instantiate(this.damageEffect, this.transform.position, Quaternion.identity);
-            if(this.hp <= 0)
+            if(this.currentHp <= 0)
             {
                 this.OnHPLessThanZero();
             }
@@ -50,10 +56,10 @@ public class HaveHPObject : MonoBehaviour
             DamageToHPObject attacker = other.GetComponent<DamageToHPObject>();
             if(attacker != null)
             {
-                this.hp -= attacker.DamageValue;
-                Instantiate(this.damageEffect, this.transform.position, Quaternion.identity);
+                this.currentHp -= attacker.DamageValue;
+                ObjectPoolManager.Instance.InstantiateGameObject(this.damageEffect, this.transform.position, Quaternion.identity);
                 attacker.OnAttack();
-                if(this.hp <= 0)
+                if(this.currentHp <= 0)
                 {
                     this.OnHPLessThanZero();
                 }
@@ -65,12 +71,12 @@ public class HaveHPObject : MonoBehaviour
         {
             //ホッケーの球には必ずDamageToHPObjectをアタッチすること！
             DamageToHPObject attacker = other.GetComponent<DamageToHPObject>();
-            this.hp -= attacker.DamageValue;
+            this.currentHp -= attacker.DamageValue;
             SEManager.Instance.Play(SEPath.EXPLOSION_MISSILE, 0.2f);
             this._meshRenderer.material = this.onDamageMaterial;
             StartCoroutine(SantaroCoroutineManager.DelayMethod(0.2f, () => this._meshRenderer.material = this.defaultMaterial));
             //Instantiate(this.damageEffect, this.transform.position, Quaternion.identity);
-            if (this.hp <= 0)
+            if (this.currentHp <= 0)
             {
                 this.OnHPLessThanZero();
             }
@@ -87,7 +93,7 @@ public class HaveHPObject : MonoBehaviour
             SceneManager.LoadScene("SantaroGameClear");
         }*/
         Debug.Log(this.transform.root.gameObject.name + "破壊");
-        Instantiate(this.destroyExplosion, this.transform.position, Quaternion.identity);
+        ObjectPoolManager.Instance.InstantiateGameObject(this.destroyExplosion, this.transform.position, Quaternion.identity);
         if(StageManager.Instance != null)
         {
             SEManager.Instance.Play(SEPath.EXPLOSION_ENEMY, volumeRate: 0.3f);
@@ -95,6 +101,6 @@ public class HaveHPObject : MonoBehaviour
             StageManager.Instance.CurrentCountDefeatEnemy++;
             Debug.Log("現在の敵を倒した数: " + StageManager.Instance.CurrentCountDefeatEnemy);
         }
-        Destroy(this.transform.root.gameObject);
+        this.gameObject.SetActive(false);
     }
 }

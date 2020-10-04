@@ -67,7 +67,7 @@ public class AutoEnemySpawner : MonoBehaviour
                 spawnPrefab = this.enemyPrefabsInLevel4[UnityEngine.Random.Range(0, this.enemyPrefabsInLevel4.Length)];
                 break;
         }
-        Instantiate(spawnPrefab, 
+        ObjectPoolManager.Instance.InstantiateGameObject(spawnPrefab, 
             this.spawnCenter + new Vector3(UnityEngine.Random.Range(-1f*this.maxInstantiateDistanceFromCenter.x, this.maxInstantiateDistanceFromCenter.x),
             UnityEngine.Random.Range(-1f*this.maxInstantiateDistanceFromCenter.y, this.maxInstantiateDistanceFromCenter.y), 0f), 
             Quaternion.identity);
@@ -79,12 +79,12 @@ public class AutoEnemySpawner : MonoBehaviour
     /// <param name="bossType">生成するprefab</param>
     public void SpawnBoss(E_Boss bossType)
     {
-        Instantiate(this.bossPrefabs[(int)bossType], this.transform.position, Quaternion.identity);
+        ObjectPoolManager.Instance.InstantiateGameObject(this.bossPrefabs[(int)bossType], this.transform.position, Quaternion.identity);
     }
 
     public void SpawnBoss(int bossIndex)
     {
-        Instantiate(this.bossPrefabs[bossIndex], this.transform.position, Quaternion.identity);
+        ObjectPoolManager.Instance.InstantiateGameObject(this.bossPrefabs[bossIndex], this.transform.position, Quaternion.identity);
     }
 
     public void SetSpawnInterval(float intervalTime)

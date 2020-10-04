@@ -10,12 +10,16 @@ public class DestroyAfterCertainTime : MonoBehaviour
     [SerializeField] private float destroyTime = 3f;
     private float countTime = 0f;
 
+    private void OnEnable()
+    {
+        this.countTime = 0f;
+    }
     private void Update()
     {
         this.countTime += Time.deltaTime;
         if(this.countTime > this.destroyTime)
         {
-            Destroy(this.gameObject);
+            this.gameObject.SetActive(false);
         }
     }
 }

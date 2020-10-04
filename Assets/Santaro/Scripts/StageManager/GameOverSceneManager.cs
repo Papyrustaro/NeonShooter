@@ -31,18 +31,12 @@ public class GameOverSceneManager : MonoBehaviour
 
     private void Start()
     {
-        this.highScoreRankingScoreValueText.text = "";
-        this.highScoreRankingPlayerNameText.text = "";
-        this.totalScoreRankingPlayerNameText.text = "";
-        this.totalScoreRankingValueText.text = "";
-        this.totalPlayCountRankingValueText.text = "";
-        this.totalPlayCountRankingPlayerNameText.text = "";
         //ここでサーバーからランキングデータを取得する。
-        //playerNameを代入。
-        //this.highScoreRankingPlayerNameText.text += "hoge";
         StartCoroutine(this.networkManager.GetRanking(NetworkManager.E_UserData.HighScore, (usersData) =>
         {
-            for(int i = 0; i < usersData.Count; i++)
+            this.highScoreRankingScoreValueText.text = "";
+            this.highScoreRankingPlayerNameText.text = "";
+            for (int i = 0; i < usersData.Count; i++)
             {
                 this.highScoreRankingPlayerNameText.text += (i + 1).ToString() + "." + usersData[i].PlayerName + "\n";
                 this.highScoreRankingScoreValueText.text += usersData[i].HighScore + "\n";
@@ -50,6 +44,8 @@ public class GameOverSceneManager : MonoBehaviour
         }));
         StartCoroutine(this.networkManager.GetRanking(NetworkManager.E_UserData.TotalScore, (usersData) =>
         {
+            this.totalScoreRankingPlayerNameText.text = "";
+            this.totalScoreRankingValueText.text = "";
             for (int i = 0; i < usersData.Count; i++)
             {
                 this.totalScoreRankingPlayerNameText.text += (i + 1).ToString() + "." + usersData[i].PlayerName + "\n";
@@ -58,6 +54,8 @@ public class GameOverSceneManager : MonoBehaviour
         }));
         StartCoroutine(this.networkManager.GetRanking(NetworkManager.E_UserData.TotalPlayCount, (usersData) =>
         {
+            this.totalPlayCountRankingValueText.text = "";
+            this.totalPlayCountRankingPlayerNameText.text = "";
             for (int i = 0; i < usersData.Count; i++)
             {
                 this.totalPlayCountRankingPlayerNameText.text += (i + 1).ToString() + "." + usersData[i].PlayerName + "\n";

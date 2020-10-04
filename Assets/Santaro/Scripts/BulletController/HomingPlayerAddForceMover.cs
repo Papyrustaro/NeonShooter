@@ -14,6 +14,12 @@ public class HomingPlayerAddForceMover : MonoBehaviour
     private float countTime = 0f;
     private Transform playerTransform;
 
+
+    private void OnEnable()
+    {
+        this.countTime = 0f;
+        this._rigidbody.velocity = Vector3.zero;
+    }
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();

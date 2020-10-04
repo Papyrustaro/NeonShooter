@@ -72,8 +72,7 @@ public class PlayerDamageController : MonoBehaviour
 
         if (other.CompareTag("AttackOfEnemy"))
         {
-            //とりあえず敵の攻撃gameObjectを消す
-            Destroy(other.transform.root.gameObject);
+            other.transform.parent.gameObject.SetActive(false);
 
             this.Damaged();
         }
@@ -84,7 +83,7 @@ public class PlayerDamageController : MonoBehaviour
         Time.timeScale = 0f;
         if (this.gameOver) return;
         this.gameOver = true;
-        Instantiate(this.destroyExplosion, this.transform.position, Quaternion.identity);
+        ObjectPoolManager.Instance.InstantiateGameObject(this.destroyExplosion, this.transform.position, Quaternion.identity);
         SEManager.Instance.Play(SEPath.EXPLOSION_PLAYER, volumeRate: 0.5f);
         StageManager.Instance.GameOver();
         //StartCoroutine(SantaroCoroutineManager.DelayMethodRealTime(0.2f, () => StageManager.Instance.GameOver()));

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SantaroDebugger : MonoBehaviour
 {
-    public static SantaroDebugger Instance { get; private set; }
+    /*public static SantaroDebugger Instance { get; private set; }
 
     private void Awake()
     {
@@ -16,5 +16,5 @@ public class SantaroDebugger : MonoBehaviour
         {
             throw new System.Exception();
         }
-    }
+    }*/
 }

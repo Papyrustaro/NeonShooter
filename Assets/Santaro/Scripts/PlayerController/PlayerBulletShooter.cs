@@ -25,7 +25,8 @@ public class PlayerBulletShooter : MonoBehaviour
     {
         this.countTime = 0f;
         SEManager.Instance.Play(SEPath.SHOT1, volumeRate: 0.05f);
-        ShotBulletManager.Instance.InstancePlayerBullet(this.transform.position);
+        ObjectPoolManager.Instance.InstantiateGameObject(this.bulletPrefab, this.transform.position, Quaternion.identity);
+        //ShotBulletManager.Instance.InstancePlayerBullet(this.transform.position);
         //Instantiate(this.bulletPrefab, this.transform.position, Quaternion.identity);
     }
 }
