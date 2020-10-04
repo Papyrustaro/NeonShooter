@@ -92,4 +92,34 @@ public class ObjectPoolManager : MonoBehaviour
     {
         releaseObj.SetActive(false);
     }
+
+    /// <summary>
+    /// 予めprefabを生成し、pooledGameObjectsにセットする
+    /// </summary>
+    /// <param name="prefab">予め生成するprefab</param>
+    /// <param name="poolNum">生成する数</param>
+    public void PoolGameObject(GameObject prefab, int poolNum)
+    {
+        // プレハブのインスタンスIDをkeyとする
+        int key = prefab.GetInstanceID();
+
+        // Dictionaryにkeyが存在しなければ作成する
+        if (pooledGameObjects.ContainsKey(key) == false)
+        {
+            pooledGameObjects.Add(key, new List<GameObject>());
+        }
+
+        List<GameObject> gameObjects = pooledGameObjects[key];
+
+        for(int i = 0; i < poolNum; i++)
+        {
+            GameObject go = (GameObject)Instantiate(prefab, Vector3.zero, Quaternion.identity);
+            go.SetActive(false);
+
+            // ObjectPoolゲームオブジェクトの子要素にする
+            go.transform.parent = transform;
+
+            gameObjects.Add(go);
+        }
+    }
 }
