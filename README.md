@@ -3,6 +3,7 @@
 CATechChallenge「3days ゲームクライアント向け 開発型インターンシップ」で制作したゲーム。  
 シューティングとホッケーを組み合わせた2.5Dアクション。  
 
-現在unityroom公開に向け開発中。  
+現在unityroomにてプレイ可能。  
+[unityroom | NeonShooter](https://unityroom.com/games/neonshooter)
 
-[インターン参加ブログ](https://papyrustaro.hatenablog.jp/entry/2020/09/27/231554)
+[制作ブログ](https://www.notion.so/papyrustaro/NeonShooter-a37ce881c1a54698bd4bdb5a3bb87604)
